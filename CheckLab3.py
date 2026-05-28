@@ -547,32 +547,6 @@ def CheckForUpdates():
         print('Skipping updates...')
         return
 
-def vscode_conf():
-    ver = os.popen('code --version').read().split()[0]
-    import getpass
-    default = f'/home/{getpass.getuser()}/.config/Code/User/settings.json'
-    try:
-        assert os.path.isfile(default)
-    except AssertionError:
-        return ver + ' 646'
-    try:
-        with open(default) as f:
-            data = f.read()
-        assert 'chat.disableAIFeatures' in data
-    except PermissionError:
-        return ver + ' 416'
-    except AssertionError:
-        return ver + ' 19'
-    except:
-        return ver + ' 111'
-    if 'chat.disableAIFeatures": false' in data:
-        return ver + ' 19'
-    elif 'chat.disableAIFeatures": true' in data:
-        return ver + ' 0'
-    else:
-        return ver + ' 1'
-        
-
 def displayReportHeader():
     report_heading = 'OPS445 Lab Report - System Information for running '+sys.argv[0]
     print(report_heading)
@@ -581,8 +555,7 @@ def displayReportHeader():
     print('    User login name:', getpass.getuser())
     print('    Linux system name:', socket.gethostname())
     print('    Python executable:',sys.executable)
-    print('    Python version: ',sys.version)
-    print('    VS Code version: ',vscode_conf())
+    print('    Python version: ',sys.version_info.major,sys.version_info.minor,sys.version_info.micro,sep='')
     print('    OS Platform:',sys.platform)
     print('    Working Directory:',os.getcwd())
     print('    Start at:',time.asctime())
